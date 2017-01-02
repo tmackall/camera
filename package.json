@@ -1,0 +1,27 @@
+{
+  "name": "Camera",
+  "version": "1.0.0",
+  "description": "Camera web service",
+  "main": "camera_svr.js",
+  "dependencies" : {
+    "request": "latest",
+    "nodemailer": "latest",
+    "winston": "latest"
+  },
+  "config" : { 
+    "port" : "3000",
+    "port_db" : "3002",
+    "ip_db" : "192.168.0.21",
+    "ll": "info"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node camera_svr.js"
+  },
+  "keywords": [
+    "camera",
+    "mackall"
+  ],
+  "author": "Tom Mackall",
+  "license": "ISC"
+}
