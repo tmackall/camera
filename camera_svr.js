@@ -1,10 +1,10 @@
 "use strict";
+const async = require('async');
 const http = require('http');
 const request = require('request');
-const nodemailer = require('nodemailer');
+const recursive = require('recursive');
 const path = require('path');
 const fs = require('fs');
-const picStore = '/tmp/pics';
 const url = require('url');
 const os = require( 'os' );
 const winston = require('winston');
@@ -16,7 +16,7 @@ const PORT_DB = process.env.PORT_DB || process.env.npm_package_config_port_db ||
 const IP_DB = process.env.IP_DB || process.env.npm_package_config_ip_db || '192.168.0.21';
 const RE_IMAGE = /.*image-cam.*\.jpg/;
 const RE_SWITCH = /.*switch.*/;
-const PIC_STORE = '/tmp/pics';
+const PIC_STORE = '/pics';
 const DB_COLLECTION = 'db/movement';
 
 var logger = new (winston.Logger)({
@@ -39,12 +39,12 @@ function dbNotification(callback) {
   request.post(
     'http://' + IP_DB + ':' + PORT_DB + '/' + DB_COLLECTION,
     function (error, response, body) {
-        if (error || response.statusCode != 200) {
-            logger.error(response);
-        }
+      if (error) {
+        logger.error(error);
+      }
+      callback(error);
   });
 
-  callback();
 
 }
 
@@ -142,10 +142,10 @@ function requestProcess(request, response) {
       STATE_SERVER == 'on') {
       
       logger.debug('Image received: %s', url);
-      var localFile = path.join(picStore, path.basename(url));
+      var localFile = path.join(PIC_STORE, path.basename(url));
 
       // dir - pics dir create if necessary
-      fs.mkdir(picStore, function(err) {
+      fs.mkdir(PIC_STORE, function(err) {
         // jpgs - write to dir
         fs.writeFile(localFile, body, 'binary', function(err){
           if (err) throw err;

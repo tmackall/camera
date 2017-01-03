@@ -4,8 +4,10 @@
   "description": "Camera web service",
   "main": "camera_svr.js",
   "dependencies" : {
+    "async": "latest",
+    "http": "latest",
+    "recursive": "latest",
     "request": "latest",
-    "nodemailer": "latest",
     "winston": "latest"
   },
   "config" : { 

@@ -1,18 +1,18 @@
 FROM resin/rpi-raspbian:jessie-20160831  
 FROM hypriot/rpi-node:slim
 
-ARG DIR_CAMERA=/srv/camera
+ARG DIR=/srv/camera
 
-WORKDIR ${DIR_CAMERA}
+WORKDIR ${DIR}
 
 # Install app dependencies
-COPY package.json ${DIR_CAMERA}
+COPY package.json ${DIR}
 RUN npm install .
 
-COPY camera_svr.js ${DIR_CAMERA}
+COPY camera_svr.js ${DIR}
 # Bundle app source
-COPY . ${DIR_CAMERA}
+COPY . ${DIR}
 
 
-ENV LL=debug
+ENV LL=info
 CMD [ "npm", "start"]
