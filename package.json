@@ -6,7 +6,7 @@
   "dependencies" : {
     "async": "latest",
     "http": "latest",
-    "recursive": "latest",
+    "recursive-readdir": "latest",
     "request": "latest",
     "winston": "latest"
   },

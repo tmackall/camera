@@ -2,7 +2,7 @@
 const async = require('async');
 const http = require('http');
 const request = require('request');
-const recursive = require('recursive');
+const recursive = require('recursive-readdir');
 const path = require('path');
 const fs = require('fs');
 const url = require('url');
@@ -26,6 +26,31 @@ var logger = new (winston.Logger)({
 });
 
 var STATE_SERVER = 'on';
+
+// -------------------------------
+// 
+// zipFiles() 
+//  - zips up a list of files.
+//
+// -------------------------------
+function zipFiles(files, callback) {
+  let fileZip = path.join(DIR_ZIP, new Date().toISOString() + '.zip');
+  let output = fs.createWriteStream(fileZip);
+  let zipArchive = archiver('zip');
+
+  output.on('close', function() {
+    logger.info(zipArchive.pointer() + ' total bytes');
+    logger.info('%s created', fileZip);
+    callback();
+  });
+
+  zipArchive.on('error', function(err) {
+      throw err;
+  });
+  zipArchive.pipe(output);
+  zipArchive.bulk([{src: files,  expand: true}]);
+  zipArchive.finalize();
+}
 
 // ------------------------------------------------
 //

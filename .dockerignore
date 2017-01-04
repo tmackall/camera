@@ -1,0 +1,6 @@
+.git
+.*swp
+run.sh
+build.sh
+.gitignore
+local_env.sh
